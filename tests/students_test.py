@@ -57,3 +57,22 @@ def test_submit_assignment_student_1(client, h_student_1):
     assert data['student_id'] == 1
     assert data['state'] == 'SUBMITTED'
     assert data['teacher_id'] == 2
+
+
+def test_edit_assignment_student_1(client, h_student_1):
+    content = 'ABCD TESTPOST 212'
+
+    response = client.post(
+        '/student/assignments',
+        headers=h_student_1,
+        json={
+            'id': 6,
+            'content': content
+        })
+
+    assert response.status_code == 200
+
+    data = response.json['data']
+    assert data['content'] == content
+    assert data['state'] == 'DRAFT'
+    assert data['teacher_id'] is None
